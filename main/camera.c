@@ -35,6 +35,7 @@
 #include "camera.h"
 #include "engine.h"
 #include "vector_math.h"
+#include <math.h>
 
 static float cameraHeight = 1.6f;
 static float cameraYaw = 0.0f;
