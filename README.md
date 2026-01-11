@@ -136,11 +136,6 @@ qwee-engine/
 
 ## Roadmap
 
-### v0.1 Alpha (Current)
-- Basic engine architecture
-- First-person camera
-- Physics foundation
-- Primitive object system
 
 ### v0.2 Planned
 - Particle system
@@ -164,4 +159,4 @@ This is an early alpha release. Feedback, bug reports, and suggestions are welco
 
 ---
 
-**QWEE Engine v0.1 Alpha** - Start building your 3D world today
+**QWEE Engine v0.2 Alpha** - Start building your 3D world today
