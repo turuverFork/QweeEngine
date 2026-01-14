@@ -545,16 +545,7 @@ SOFTWARE.
 | Build System | ✅ Robust | Cross-platform support |
 | Scripting | 🔧 Experimental | Basic interpreter available |
 
-### 🔮 Roadmap to v1.0
-- [ ] **v0.4** - Networking support
-- [ ] **v0.5** - Save system & serialization  
-- [ ] **v0.6** - Advanced rendering effects
-- [ ] **v0.7** - Animation system
-- [ ] **v0.8** - GUI framework
-- [ ] **v0.9** - Visual editor prototype
-- [ ] **v1.0** - Stable release
 
----
 
 *Last Updated: January 2026*  
 *QWEE Engine v0.3 - "The Understandable Engine"*
