@@ -1,0 +1,58 @@
+set window{
+    width 1280
+    height 720
+}
+
+create scene3d (game)
+create scene2d (menu)
+
+game [
+    create.obj.player(0, 1, 0, true, true) {lin -> script_player}
+    create.plane(GREEN)
+    create.obj.box(10, 1, 10, false, true) {lin -> script_eme}
+    create.obj.box(-10, 1, -10, false, true) {lin -> script_eme2}
+
+    create script (script_player)
+    create script (script_eme)
+    create script (script_eme2)
+
+    script_player{
+        #define speed = 5.0f
+
+        if key_preseed == true:
+            if key_code == KEY_W:
+                printf("Moving forward");
+        
+        if collision == true:
+            if collision -> eme:
+                printf("Hit enemy!");
+    }
+
+    script_eme{
+        move(2.0f) to -> player
+    }
+
+    script_eme2{
+        move(1.5f) to -> player
+    }
+
+]
+
+menu[
+    background = (20, 20, 20)
+    create.2d.button((600, 300), (120, 20, 20)){lin -> script_button}
+    create.2d.button((600, 400), (20, 120, 20)){lin -> script_exit}
+
+    create script (script_button)
+    create script (script_exit)
+
+    script_button{
+        if button_pressed == true:
+            next.scene -> game
+    }
+
+    script_exit{
+        if button_pressed == true:
+            printf("Exiting game");
+    }
+]

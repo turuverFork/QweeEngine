@@ -2,43 +2,9 @@
 //QWEE Engine - Lightweight 3D Game Engine
 //Copyright (C) 2026 QWEE Development Team
 //
-//Engine version: 0.1 | Build: ALPHA-2026
-//
-//Core Systems:
-//  [✓] Physics: Rigidbody dynamics, AABB/Sphere collisions
-//  [✓] Rendering: First-person camera, object rendering
-//  [✓] Object System: Cubes, spheres, cylinders, pyramids
-//  [✓] Camera: First-person controls with mouse look
-//  [✓] Input: WASD movement, mouse camera control
-//  [✓] Particles: Fire, smoke, rain, snow, sparks, dust
-//  [✓] Fog: Linear, exponential, volumetric fog
-//  [✓] Shadows: Simple, soft, PCF shadows
-//
-///Performance Profile:
-//  - Max objects: 500 units
-//  - Max particles: 10,000 units
-//  - Target FPS: 60 @ 1280x720
-//  - Physics steps: 1000+/sec
-//  - Memory footprint: <64KB object pool + <32KB particle pool
-//
-//Build Configuration:
-//  - Platform: Windows/Linux/macOS (via Raylib)
-//  - Mode: First-person 3D
-//  - Renderer: Software-accelerated 3D
-//
-//Controls:
-//  W/A/S/D    - Player movement
-//  Mouse      - Camera look
-//  SPACE      - Jump
-//  SHIFT      - Run
-//  F1         - Toggle wireframe
-//  F2         - Toggle shadows
-//  F3         - Toggle fog
-//  F4         - Toggle particles
-//  R          - Throw physics ball
-//  P          - Create particle burst
-//  ESC        - Exit engine
-// ==================================================================
+//Main Engine Header
+//==================================================================
+
 #ifndef ENGINE_H
 #define ENGINE_H
 
@@ -51,6 +17,8 @@
 #include "particles.h"
 #include "fog.h"
 #include "shadows.h"
+#include "audio.h"
+#include "scene.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <stddef.h>
@@ -65,6 +33,7 @@ extern bool wireframeMode;
 extern bool particlesEnabled;
 extern bool fogEnabled;
 extern bool shadowsEnabled;
+extern bool audioEnabled;
 
 void InitEngine(int screenWidth, int screenHeight, const char* title, bool fullscreen);
 void CloseEngine();
@@ -84,12 +53,27 @@ void SetFogPreset(int preset);
 void ToggleShadows(bool enabled);
 void SetShadowPreset(int preset);
 
+void ToggleAudio(bool enabled);
+void PlayTestSound();
+void LoadAndPlayMusic(const char* name, const char* filePath, float volume, bool loop);
+void PlaySoundEffect(const char* name, const char* filePath, float volume, float duration);
+
+void Engine_RegisterScene(const char* name, SceneType type, 
+                         SceneFunction init, SceneFunction update, 
+                         SceneFunction render, SceneFunction close);
+void Engine_SwitchScene(const char* name);
+const char* Engine_GetCurrentSceneName();
+bool Engine_IsCurrentScene2D();
+bool Engine_IsCurrentScene3D();
+
 bool GetParticlesEnabled();
 bool GetFogEnabled();
 bool GetShadowsEnabled();
+bool GetAudioEnabled();
 ParticleEmitter* GetParticleEmitter(const char* name);
 FogSettings* GetEngineFogSettings();
 ShadowSettings* GetEngineShadowSettings();
+AudioFile* GetAudioFile(const char* name);
 
 GameObject** GetObjects();
 int* GetObjectCount();

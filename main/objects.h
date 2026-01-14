@@ -1,36 +1,9 @@
- //==================================================================
+//==================================================================
 //QWEE Engine - Lightweight 3D Game Engine
 //Copyright (C) 2026 QWEE Development Team
 //
-//Engine version: 0.1 | Build: ALPHA-2026
-//
-//Core Systems:
-//  [✓] Physics: Rigidbody dynamics, AABB/Sphere collisions
-//  [✓] Rendering: First-person camera, object rendering
-// [✓] Object System: Cubes, spheres, cylinders, pyramids
-//  [✓] Camera: First-person controls with mouse look
-//  [✓] Input: WASD movement, mouse camera control
-//
-///Performance Profile:
-//  - Max objects: 500 units
-//  - Target FPS: 60 @ 1280x720
-// - Physics steps: 1000+/sec
-//  - Memory footprint: <64KB object pool
-//
-//Build Configuration:
- // - Platform: Windows/Linux/macOS (via Raylib)
- // - Mode: First-person 3D
-  //   - Renderer: Software-accelerated 3D
-//
- //Controls:
- //  W/A/S/D    - Player movement
- //  Mouse      - Camera look
- //  SPACE      - Jump
-  // SHIFT      - Run
-// F1         - Toggle wireframe
- // R          - Throw physics ball
- // ESC        - Exit engine
-// ==================================================================
+//Object System Module
+//==================================================================
 
 #ifndef OBJECTS_H
 #define OBJECTS_H
@@ -38,8 +11,6 @@
 #include "raylib.h"
 #include "physics.h"
 #include <stdbool.h>
-
-typedef struct GameObject GameObject;
 
 typedef enum
 {
@@ -53,6 +24,25 @@ typedef enum
     OBJ_CUSTOM
 } ObjectType;
 
+typedef enum
+{
+    TEX_DIFFUSE,
+    TEX_NORMAL,
+    TEX_SPECULAR
+} TextureType;
+
+typedef struct
+{
+    Color color;
+    Texture2D diffuseMap;   
+    Texture2D normalMap;      
+    Texture2D specularMap;   
+    float shininess;         
+    float reflectivity;     
+    bool useNormalMap;      
+    bool useSpecularMap;     
+} ObjectMaterial;
+
 struct GameObject
 {
     ObjectType type;
@@ -61,10 +51,14 @@ struct GameObject
     Vector3 position;
     Vector3 size;
     Vector3 rotation;
-    Color color;
     
+    Color color;
     Texture2D texture;
     bool hasTexture;
+
+    ObjectMaterial material;
+    bool hasMaterial;
+    
     bool isVisible;
     
     bool hasPhysics;
@@ -80,6 +74,11 @@ struct GameObject
 };
 
 #define MAX_OBJECTS 500
+#define MAX_TEXTURES 100
+
+Texture2D LoadGameTexture(const char* path, const char* textureName);
+void UnloadGameTexture(const char* textureName);
+Texture2D GetTextureByName(const char* textureName);
 
 GameObject* CreateObject(ObjectType type, const char* name, float x, float y, float z, 
                          bool physics, bool collision);
@@ -89,14 +88,46 @@ void SetObjectPosition(GameObject* obj, float x, float y, float z);
 void SetObjectScale(GameObject* obj, float sx, float sy, float sz);
 void SetObjectRotation(GameObject* obj, float rx, float ry, float rz);
 
+void SetObjectMaterial(GameObject* obj, ObjectMaterial material);
+void SetObjectTexture(GameObject* obj, const char* texturePath, TextureType texType);
+void SetObjectColor(GameObject* obj, Color color);
+void SetObjectShininess(GameObject* obj, float shininess);
+
+void SetObjectTextureOld(GameObject* obj, const char* texturePath);  
+void SetObjectColorOld(GameObject* obj, Color color);  
+
+
+GameObject* CreateCubeEx(const char* name, float x, float y, float z, 
+                         bool physics, bool collision, 
+                         const char* diffusePath, const char* normalPath,
+                         const char* specularPath, Color color, float shininess);
+GameObject* CreateSphereEx(const char* name, float x, float y, float z, 
+                           bool physics, bool collision, 
+                           Color color, float radius,
+                           const char* diffusePath, float shininess);
+GameObject* CreatePlayer(const char* name, float x, float y, float z, 
+                         bool physics, bool collision);
+GameObject* CreatePyramidEx(const char* name, float x, float y, float z, 
+                            bool physics, bool collision, 
+                            const char* diffusePath, Color color, float shininess);
+GameObject* CreateCylinderEx(const char* name, float x, float y, float z, 
+                             bool physics, bool collision, 
+                             Color color, float radius, float height,
+                             const char* diffusePath);
+GameObject* CreatePlaneEx(const char* name, float x, float y, float z, 
+                          float width, float depth, Color color,
+                          const char* diffusePath, bool tiled);
+GameObject* CreateConeEx(const char* name, float x, float y, float z, 
+                         bool physics, bool collision, 
+                         Color color, float radius, float height,
+                         const char* diffusePath);
+
 GameObject* CreateCube(const char* name, float x, float y, float z, 
                        bool physics, bool collision, 
                        const char* texturePath, Color color);
 GameObject* CreateSphere(const char* name, float x, float y, float z, 
                          bool physics, bool collision, 
                          Color color, float radius);
-GameObject* CreatePlayer(const char* name, float x, float y, float z, 
-                         bool physics, bool collision);
 GameObject* CreatePyramid(const char* name, float x, float y, float z, 
                           bool physics, bool collision, 
                           const char* texturePath, Color color);
