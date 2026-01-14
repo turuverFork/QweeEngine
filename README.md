@@ -1,8 +1,6 @@
 # 🎮 QWEE Engine v0.3
 
 <div align="center">
-
-![QWEE Engine Logo](https://via.placeholder.com/150x150/4A90E2/FFFFFF?text=QWEE)
   
 **Lightweight 3D Game Engine for Rapid Prototyping & Learning**
 
